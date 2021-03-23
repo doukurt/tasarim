@@ -45,7 +45,8 @@ public class OtherFragment extends ListFragment {
                 firebaseAuth.signOut();
                 Intent intent = new Intent(getActivity().getApplicationContext(),SignIn.class);
                 startActivity(intent);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                getActivity().finish();
+
 
             }
         });

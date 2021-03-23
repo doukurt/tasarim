@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -43,6 +44,14 @@ public class SignIn extends AppCompatActivity {
     public void signIn (View view){
         String u_email=signInEmail.getText().toString();
         String u_password=signInPassword.getText().toString();
+
+        if(TextUtils.isEmpty(u_email)) {
+            signInEmail.setError("Lütfen Boş Bırakmayın");
+            return;
+        }if(TextUtils.isEmpty(u_password)) {
+            signInPassword.setError("Lütfen Boş Bırakmayın");
+            return;
+        }
 
         firebaseAuth.signInWithEmailAndPassword(u_email,u_password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override

@@ -123,11 +123,6 @@ public class SignUp extends AppCompatActivity {
                       Toast.makeText(SignUp.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
                 }
             });
-
-
-
-
         }
-
     }
 }
