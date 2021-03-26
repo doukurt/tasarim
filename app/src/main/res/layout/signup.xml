@@ -101,7 +101,8 @@
             android:layout_height="150dp"
             android:ems="10"
             android:hint="Adres*"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textAlignment="textStart" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

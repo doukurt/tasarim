@@ -2,48 +2,83 @@ package com.kapici.kapici;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.MenuItem;
+
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Map;
 
 public class SignIn extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     EditText signInEmail,signInPassword;
+
+    private FirebaseFirestore firebaseFirestore;
+    boolean isAdmin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
 
         firebaseAuth= FirebaseAuth.getInstance();
+        firebaseFirestore=FirebaseFirestore.getInstance();
 
         signInEmail= findViewById(R.id.signInEmail);
         signInPassword=findViewById(R.id.signInPassword);
-
         FirebaseUser currentUser=firebaseAuth.getCurrentUser();
-        if(currentUser!=null){
-            Intent intent = new Intent(getApplicationContext(),NavHost.class);
-            startActivity(intent);
-            finish();
-        }
 
+        if(currentUser!=null){
+
+        String userId=currentUser.getUid();
+
+
+       firebaseFirestore.collection("UserDetails").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    Map<String, Object> data=document.getData();
+                    isAdmin=(boolean) data.get("admin");
+                    System.out.println("onQuery"+isAdmin);
+                }
+            }
+        }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if(isAdmin){
+                    Intent intentToAdminPage = new Intent(getApplicationContext(),ForgetPassword.class);//gidecegi yer öylesine tasarlanınca degisacek
+                    startActivity(intentToAdminPage);
+                    finish();
+                }else{
+                    Intent intent = new Intent(getApplicationContext(),NavHost.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+        }
     }
+
+
 
     public void signIn (View view){
         String u_email=signInEmail.getText().toString();
         String u_password=signInPassword.getText().toString();
+
 
         if(TextUtils.isEmpty(u_email)) {
             signInEmail.setError("Lütfen Boş Bırakmayın");
@@ -56,22 +91,50 @@ public class SignIn extends AppCompatActivity {
         firebaseAuth.signInWithEmailAndPassword(u_email,u_password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
             public void onSuccess(AuthResult authResult) {
-                Toast.makeText(SignIn.this,"Başarıyla Giriş Yaptınız",Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(getApplicationContext(),NavHost.class);
-                startActivity(intent);
-                finish();
+                FirebaseUser currentUser=firebaseAuth.getCurrentUser();
+                String userId=currentUser.getUid();
+
+                firebaseFirestore.collection("UserDetails").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            Map<String, Object> data=document.getData();
+                            isAdmin=(boolean) data.get("admin");
+                            System.out.println("onQuery"+isAdmin);
+                        }
+                    }
+                }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if(isAdmin){
+                            Intent intentToAdminPage = new Intent(getApplicationContext(),ForgetPassword.class);//gidecegi yer öylesine tasarlanınca degisacek
+                            startActivity(intentToAdminPage);
+                            finish();
+                            Toast.makeText(SignIn.this,"Admin girişi başarılı",Toast.LENGTH_LONG).show();
+                        }
+                        else{
+                            Intent intent = new Intent(getApplicationContext(),NavHost.class);
+                            startActivity(intent);
+                            finish();
+                            Toast.makeText(SignIn.this,"Başarıyla Giriş Yaptınız",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(SignIn.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(SignIn.this,e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
             }
         });
 
-
-
-
     }
+
+
+
     public void kayitol (View view){
 
         Intent intent = new Intent(SignIn.this,SignUp.class);

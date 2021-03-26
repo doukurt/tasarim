@@ -18,9 +18,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.kapici.kapici.Models.Users;
 
 
-
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -58,9 +59,10 @@ public class SignUp extends AppCompatActivity {
         String passwordRepeat = userPasswordRepeat.getText().toString();
         String name= userNameEditText.getText().toString();
         String surname= userSurnameEditText.getText().toString();
-        String birthday=userBirthday.getText().toString();
+        String birthday= userBirthday.getText().toString();
         String phoneNumber=userPhoneNumber.getText().toString();
-        String adress= userAdressEditText.getText().toString();
+        String address= userAdressEditText.getText().toString();
+
 
 
         if (!password.matches(passwordRepeat)){
@@ -83,7 +85,7 @@ public class SignUp extends AppCompatActivity {
         }if(TextUtils.isEmpty(phoneNumber)) {
             userPhoneNumber.setError("Lütfen Boş Bırakmayın");
             return;
-        }if(TextUtils.isEmpty(adress)) {
+        }if(TextUtils.isEmpty(address)) {
             userAdressEditText.setError("Lütfen Boş Bırakmayın");
             return;
         }else{
@@ -95,15 +97,9 @@ public class SignUp extends AppCompatActivity {
                     FirebaseUser user=firebaseAuth.getCurrentUser();
                     String userId = user.getUid();
 
-                    HashMap<String,Object> userData= new HashMap<>();
-                    userData.put("name",name);
-                    userData.put("surname",surname);
-                    userData.put("birthday",birthday);
-                    userData.put("phoneNumber",phoneNumber);
-                    userData.put("adress",adress);
+                    Users newUser=new Users(name,surname,birthday,phoneNumber,address);
 
-
-                    firebaseFirestore.collection("UserDetails").document(userId).set(userData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    firebaseFirestore.collection("UserDetails").document(userId).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
                             Intent intent = new Intent(SignUp.this,NavHost.class);
@@ -113,14 +109,14 @@ public class SignUp extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                           Toast.makeText(SignUp.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                           Toast.makeText(SignUp.this,e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
                         }
                     });
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                      Toast.makeText(SignUp.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                      Toast.makeText(SignUp.this,e.getLocalizedMessage(),Toast.LENGTH_LONG).show();
                 }
             });
         }
