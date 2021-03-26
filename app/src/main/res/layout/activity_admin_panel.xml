@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:layout_editor_absoluteX="70dp"
+    tools:layout_editor_absoluteY="55dp"
+    tools:context=".AdminPanel">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/addProduct"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:onClick="addProduct"
+                android:text="Ürün Ekle" />
+
+            <Button
+                android:id="@+id/updateProduct"
+                android:layout_width="170dp"
+                android:layout_height="wrap_content"
+                android:onClick="updateProduct"
+                android:text="Ürün Güncelle" />
+
+            <Button
+                android:id="@+id/deleteProduct"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:onClick="deleteProduct"
+                android:text="Ürün Sil" />
+        </LinearLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+
+        android:id="@+id/admin_frame_layout"></FrameLayout>
+
+
+</LinearLayout>

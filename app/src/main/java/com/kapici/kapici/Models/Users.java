@@ -14,7 +14,7 @@ public class Users {
         this.birthday = birthday;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.isAdmin = true;
+        this.isAdmin = false;
     }
 
     public String getName() {

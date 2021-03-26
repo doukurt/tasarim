@@ -60,7 +60,7 @@ public class SignIn extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(isAdmin){
-                    Intent intentToAdminPage = new Intent(getApplicationContext(),ForgetPassword.class);//gidecegi yer öylesine tasarlanınca degisacek
+                    Intent intentToAdminPage = new Intent(getApplicationContext(),AdminPanel.class);//gidecegi yer öylesine tasarlanınca degisacek
                     startActivity(intentToAdminPage);
                     finish();
                 }else{
@@ -108,7 +108,7 @@ public class SignIn extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if(isAdmin){
-                            Intent intentToAdminPage = new Intent(getApplicationContext(),ForgetPassword.class);//gidecegi yer öylesine tasarlanınca degisacek
+                            Intent intentToAdminPage = new Intent(getApplicationContext(),AdminPanel.class);//gidecegi yer öylesine tasarlanınca degisacek
                             startActivity(intentToAdminPage);
                             finish();
                             Toast.makeText(SignIn.this,"Admin girişi başarılı",Toast.LENGTH_LONG).show();
