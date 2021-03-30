@@ -20,7 +20,12 @@ public class AdminPanel extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         AddProduct addProduct = new AddProduct();
         fragmentTransaction.replace(R.id.admin_frame_layout,addProduct).commit();
-
+    }
+    public void listProduct(View view){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        ListProductForAdmin listProduct = new ListProductForAdmin();
+        fragmentTransaction.replace(R.id.admin_frame_layout,listProduct).commit();
     }
 
 

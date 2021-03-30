@@ -17,24 +17,19 @@
 
             <Button
                 android:id="@+id/addProduct"
-                android:layout_width="120dp"
+                android:layout_width="205dp"
                 android:layout_height="wrap_content"
                 android:onClick="addProduct"
                 android:text="Ürün Ekle" />
 
             <Button
                 android:id="@+id/updateProduct"
-                android:layout_width="170dp"
+                android:layout_width="205dp"
                 android:layout_height="wrap_content"
-                android:onClick="updateProduct"
-                android:text="Ürün Güncelle" />
+                android:onClick="listProduct"
+                android:text="Ürünleri Listele" />
 
-            <Button
-                android:id="@+id/deleteProduct"
-                android:layout_width="120dp"
-                android:layout_height="wrap_content"
-                android:onClick="deleteProduct"
-                android:text="Ürün Sil" />
+
         </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"

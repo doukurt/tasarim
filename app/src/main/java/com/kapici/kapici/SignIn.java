@@ -53,14 +53,13 @@ public class SignIn extends AppCompatActivity {
                     DocumentSnapshot document = task.getResult();
                     Map<String, Object> data=document.getData();
                     isAdmin=(boolean) data.get("admin");
-                    System.out.println("onQuery"+isAdmin);
                 }
             }
         }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if(isAdmin){
-                    Intent intentToAdminPage = new Intent(getApplicationContext(),AdminPanel.class);//gidecegi yer öylesine tasarlanınca degisacek
+                    Intent intentToAdminPage = new Intent(getApplicationContext(),AdminPanel.class);
                     startActivity(intentToAdminPage);
                     finish();
                 }else{

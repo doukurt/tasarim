@@ -1,19 +1,22 @@
 package com.kapici.kapici.Models;
 
 public class Products {
-
     private String productName;
     private String productDetail;
     private String productCategory;
     private String productPrice;
     private String productImage;
 
-    public Products(String productName, String productDetail, String productCategory, String productPrice) {
+
+    public Products(String productName, String productDetail, String productCategory, String productPrice, String productImage) {
         this.productName = productName;
         this.productDetail = productDetail;
         this.productCategory = productCategory;
         this.productPrice = productPrice;
         this.productImage = productImage;
+    }
+
+    public Products() {
     }
 
     public String getProductName() {

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView11"
+        android:id="@+id/setProductImage"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="33dp"
@@ -30,7 +30,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editProductDetail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView11" />
+        app:layout_constraintTop_toBottomOf="@+id/setProductImage" />
 
     <EditText
         android:id="@+id/editProductDetail"
@@ -40,7 +40,7 @@
         android:ems="10"
         android:hint="Ürün Açıklaması"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editProductCategory"
+        app:layout_constraintBottom_toTopOf="@+id/updateProductCategory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editProductName" />
@@ -54,23 +54,23 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProductPrice" />
+        app:layout_constraintTop_toBottomOf="@+id/updateProductPrice" />
 
     <EditText
-        android:id="@+id/editProductCategory"
+        android:id="@+id/updateProductCategory"
         android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
         android:ems="10"
         android:hint="Kategori"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/editProductPrice"
+        app:layout_constraintBottom_toTopOf="@+id/updateProductPrice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editProductDetail" />
 
     <EditText
-        android:id="@+id/editProductPrice"
+        android:id="@+id/updateProductPrice"
         android:layout_width="214dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="27dp"
@@ -80,6 +80,6 @@
         app:layout_constraintBottom_toTopOf="@+id/save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProductCategory" />
+        app:layout_constraintTop_toBottomOf="@+id/updateProductCategory" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
