@@ -22,22 +22,22 @@ import java.util.ArrayList;
 
 public class AdminRecyclerAdapter extends RecyclerView.Adapter<AdminRecyclerAdapter.ProductHolder> {
 
-
     private ArrayList<String> productNameList;
     private ArrayList<String> productPriceList;
     private ArrayList<String> productImageList;
     private ArrayList<String> productIdList;
     private ArrayList<String> productDetailList;
     private ArrayList<String> productCategoryList;
+    private ArrayList<String> productImageNameList;
 
-
-    public AdminRecyclerAdapter(ArrayList<String> productNameList, ArrayList<String> productPriceList, ArrayList<String> productImageList, ArrayList<String> productIdList, ArrayList<String> productDetailList, ArrayList<String> productCategoryList) {
+    public AdminRecyclerAdapter(ArrayList<String> productNameList, ArrayList<String> productPriceList, ArrayList<String> productImageList, ArrayList<String> productIdList, ArrayList<String> productDetailList, ArrayList<String> productCategoryList, ArrayList<String> productImageNameList) {
         this.productNameList = productNameList;
         this.productPriceList = productPriceList;
         this.productImageList = productImageList;
         this.productIdList = productIdList;
         this.productDetailList = productDetailList;
         this.productCategoryList = productCategoryList;
+        this.productImageNameList = productImageNameList;
     }
 
     @NonNull
@@ -53,7 +53,6 @@ public class AdminRecyclerAdapter extends RecyclerView.Adapter<AdminRecyclerAdap
          holder.productName.setText(productNameList.get(position));
          holder.productPrice.setText(productPriceList.get(position)+"₺");
          Picasso.get().load(productImageList.get(position)).into(holder.productImage);
-          productNameList.get(position);
 
          holder.cardView.setOnClickListener(new View.OnClickListener() {
              @Override
@@ -66,6 +65,7 @@ public class AdminRecyclerAdapter extends RecyclerView.Adapter<AdminRecyclerAdap
                  intent.putExtra("Id",productIdList.get(position));
                  intent.putExtra("Detail",productDetailList.get(position));
                  intent.putExtra("Category",productCategoryList.get(position));
+                 intent.putExtra("ImageName",productImageNameList.get(position));
                  context.startActivity(intent);
              }
          });

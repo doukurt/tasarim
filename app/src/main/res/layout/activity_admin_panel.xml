@@ -18,14 +18,14 @@
             <Button
                 android:id="@+id/addProduct"
                 android:layout_width="205dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:onClick="addProduct"
                 android:text="Ürün Ekle" />
 
             <Button
-                android:id="@+id/updateProduct"
+                android:id="@+id/listProduct"
                 android:layout_width="205dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:onClick="listProduct"
                 android:text="Ürünleri Listele" />
 
@@ -35,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
-        android:id="@+id/admin_frame_layout"></FrameLayout>
+        android:id="@+id/admin_frame_layout" />
 
 
 </LinearLayout>

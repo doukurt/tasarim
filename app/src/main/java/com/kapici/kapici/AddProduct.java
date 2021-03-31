@@ -54,9 +54,7 @@ public class AddProduct extends Fragment {
         firebaseFirestore= FirebaseFirestore.getInstance();
         firebaseStorage=FirebaseStorage.getInstance();
         storageReference=firebaseStorage.getReference();
-        View view = inflater.inflate(R.layout.fragment_add_product,container,false);
-
-        return view;
+        return inflater.inflate(R.layout.fragment_add_product,container,false);
     }
 
     @Override
@@ -89,7 +87,7 @@ public class AddProduct extends Fragment {
                                  @Override
                                  public void onSuccess(Uri uri) {
                                      String downloadUrl= uri.toString();
-                                     Products product = new Products(name,detail,category,price,downloadUrl);
+                                     Products product = new Products(name,detail,category,price,downloadUrl,imageName);
                                      firebaseFirestore.collection("Products").add(product).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                                          @Override
                                          public void onSuccess(DocumentReference documentReference) {

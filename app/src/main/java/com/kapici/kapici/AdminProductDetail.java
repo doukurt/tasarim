@@ -25,16 +25,20 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.kapici.kapici.Models.Products;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.UUID;
 
 public class AdminProductDetail extends AppCompatActivity {
 
     EditText updateName,updateDetail,updateCategory,updatePrice;
     ImageView updateImage;
-    String id;
+    String id, imageName;
     Uri imageData;
     Bitmap selectedImage;
 
@@ -52,6 +56,7 @@ public class AdminProductDetail extends AppCompatActivity {
         String price = intent.getExtras().getString("Price");
         String detail = intent.getExtras().getString("Detail");
         String category = intent.getExtras().getString("Category");
+        imageName = intent.getExtras().getString("ImageName");
         id = intent.getExtras().getString("Id");
 
         firebaseFirestore=FirebaseFirestore.getInstance();
@@ -62,6 +67,8 @@ public class AdminProductDetail extends AppCompatActivity {
         updatePrice= findViewById(R.id.updatePrice);
         updateImage = findViewById(R.id.updateImage);
 
+
+
         updateName.setText(name);
         updatePrice.setText(price);
         updateDetail.setText(detail);
@@ -69,8 +76,6 @@ public class AdminProductDetail extends AppCompatActivity {
         Picasso.get().load(image).into(updateImage);
 
     }
-
-
 
     public void updateProduct(View view){
         String updatedName = updateName.getText().toString();
@@ -84,30 +89,87 @@ public class AdminProductDetail extends AppCompatActivity {
         updatedData.put("productCategory",updatedCategory);
         updatedData.put("productPrice",updatedPrice);
 
-
-
-        firebaseFirestore.collection("Products").document(id).update(updatedData).addOnSuccessListener(new OnSuccessListener<Void>() {
+        if(imageData!=null){
+        firebaseStorage.getReference().child(imageName).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(AdminProductDetail.this,"Başarıyla Güncellendi",Toast.LENGTH_LONG).show();
+
+                firebaseStorage.getReference().child(imageName).putFile(imageData).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        StorageReference newReference = FirebaseStorage.getInstance().getReference(imageName);
+                        newReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                String downloadUrl= uri.toString();
+                                updatedData.put("productImage",downloadUrl);
+                                firebaseFirestore.collection("Products").document(id).update(updatedData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Toast.makeText(AdminProductDetail.this,"Başarıyla Güncellendi",Toast.LENGTH_LONG).show();
+                                        Intent intent = new Intent(AdminProductDetail.this,AdminPanel.class);
+                                        startActivity(intent);
+                                        finish();
+                                    }
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Toast.makeText(AdminProductDetail.this,""+e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AdminProductDetail.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(AdminProductDetail.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                Toast.makeText(AdminProductDetail.this,"deletefoto"+e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
             }
         });
-
-
-
-
+        }else{
+            firebaseFirestore.collection("Products").document(id).update(updatedData).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(AdminProductDetail.this,"Başarıyla Güncellendi",Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(AdminProductDetail.this,AdminPanel.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(AdminProductDetail.this,""+e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
     public void deleteProduct(View view){
-        firebaseFirestore.collection("Products").document(id)
-                .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+
+        firebaseStorage.getReference().child(imageName).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-                Toast.makeText(AdminProductDetail.this,"Başarıyla Silindi",Toast.LENGTH_LONG).show();
+                firebaseFirestore.collection("Products").document(id)
+                        .delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(AdminProductDetail.this,"Başarıyla Silindi",Toast.LENGTH_LONG).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(AdminProductDetail.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
+                    }
+                });
+                Intent intent = new Intent(AdminProductDetail.this,AdminPanel.class);
+                startActivity(intent);
+                finish();
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -115,11 +177,6 @@ public class AdminProductDetail extends AppCompatActivity {
                 Toast.makeText(AdminProductDetail.this,e.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
             }
         });
-
-        Intent intent = new Intent(AdminProductDetail.this,AdminPanel.class);
-        startActivity(intent);
-        finish();
-
     }
     public void updateImageData(View view){
 

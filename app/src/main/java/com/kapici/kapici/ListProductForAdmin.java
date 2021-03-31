@@ -33,6 +33,7 @@ public class ListProductForAdmin extends Fragment {
     ArrayList<String> productIdFB;
     ArrayList<String> productCategoryFB;
     ArrayList<String> productDetailFB;
+    ArrayList<String> productImageNameFB;
 
     AdminRecyclerAdapter adminRecyclerAdapter;
     CollectionReference collectionReference;
@@ -50,15 +51,15 @@ public class ListProductForAdmin extends Fragment {
         productIdFB=new ArrayList<>();
         productCategoryFB= new ArrayList<>();
         productDetailFB = new ArrayList<>();
+        productImageNameFB= new ArrayList<>();
 
         getDataFromFirestore();
 
 
         RecyclerView adminProductList = view.findViewById(R.id.admin_product_list);
         adminProductList.setLayoutManager(new GridLayoutManager(getContext(),3));
-        adminRecyclerAdapter = new AdminRecyclerAdapter(productNameFB,productPriceFB,productImageFB,productIdFB,productDetailFB,productCategoryFB);
+        adminRecyclerAdapter = new AdminRecyclerAdapter(productNameFB,productPriceFB,productImageFB,productIdFB,productDetailFB,productCategoryFB,productImageNameFB);
         adminProductList.setAdapter(adminRecyclerAdapter);
-
 
         return view;
     }
@@ -80,6 +81,7 @@ public class ListProductForAdmin extends Fragment {
                         String price = (String) data.get("productPrice");
                         String  detail= (String) data.get("productDetail");
                         String category = (String) data.get("productCategory");
+                        String  imageName= (String) data.get("productImageName");
 
 
 
@@ -88,18 +90,13 @@ public class ListProductForAdmin extends Fragment {
                         productPriceFB.add(price);
                         productDetailFB.add(detail);
                         productCategoryFB.add(category);
+                        productImageNameFB.add(imageName);
                         productIdFB.add(snapshot.getId());
-
                         adminRecyclerAdapter.notifyDataSetChanged();
 
-
                     }
-
                 }
-
-
             }
         });
-
     }
 }
