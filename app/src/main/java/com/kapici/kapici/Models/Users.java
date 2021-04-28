@@ -8,6 +8,9 @@ public class Users {
     private String address;
     private boolean isAdmin;
 
+    public Users() {
+    }
+
     public Users(String name, String surname, String birthday, String phoneNumber, String address) {
         this.name = name;
         this.surname = surname;

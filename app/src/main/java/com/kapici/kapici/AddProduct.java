@@ -13,9 +13,12 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,7 +41,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class AddProduct extends Fragment {
+public class AddProduct extends Fragment implements AdapterView.OnItemSelectedListener {
 
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
@@ -47,6 +50,7 @@ public class AddProduct extends Fragment {
     Bitmap selectedImage;
     ImageView productImage;
     Uri imageData;
+    String category;
 
     @Nullable
     @Override
@@ -54,7 +58,13 @@ public class AddProduct extends Fragment {
         firebaseFirestore= FirebaseFirestore.getInstance();
         firebaseStorage=FirebaseStorage.getInstance();
         storageReference=firebaseStorage.getReference();
-        return inflater.inflate(R.layout.fragment_add_product,container,false);
+        View view=inflater.inflate(R.layout.fragment_add_product,container,false);
+        Spinner spinner = view.findViewById(R.id.updateProductCategory);
+        ArrayAdapter<CharSequence> adapter=ArrayAdapter.createFromResource(getContext(),R.array.Category, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+        return view;
     }
 
     @Override
@@ -63,7 +73,6 @@ public class AddProduct extends Fragment {
         Button save = view.findViewById(R.id.save);
         editProductName= view.findViewById(R.id.editProductName);
         editProductDetail= view.findViewById(R.id.editProductDetail);
-        editProductCategory= view.findViewById(R.id.updateProductCategory);
         editProductPrice=view.findViewById(R.id.updateProductPrice);
         productImage=view.findViewById(R.id.setProductImage);
         save.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +80,6 @@ public class AddProduct extends Fragment {
             public void onClick(View v) {
                 String name=editProductName.getText().toString();
                 String detail=editProductDetail.getText().toString();
-                String category = editProductCategory.getText().toString();
                 String price= editProductPrice.getText().toString();
 
 
@@ -158,5 +166,15 @@ public class AddProduct extends Fragment {
         }
 
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        category=parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

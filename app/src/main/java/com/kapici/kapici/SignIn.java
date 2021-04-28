@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
+import com.kapici.kapici.Models.Users;
 
 import java.util.Map;
 
@@ -34,41 +36,33 @@ public class SignIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
 
-        firebaseAuth= FirebaseAuth.getInstance();
-        firebaseFirestore=FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
 
-        signInEmail= findViewById(R.id.signInEmail);
-        signInPassword=findViewById(R.id.signInPassword);
-        FirebaseUser currentUser=firebaseAuth.getCurrentUser();
+        signInEmail = findViewById(R.id.signInEmail);
+        signInPassword = findViewById(R.id.signInPassword);
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-        if(currentUser!=null){
+        if (currentUser != null) {
 
-        String userId=currentUser.getUid();
+            String userId = currentUser.getUid();
 
-
-       firebaseFirestore.collection("UserDetails").document(userId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    Map<String, Object> data=document.getData();
-                    isAdmin=(boolean) data.get("admin");
+            firebaseFirestore.collection("UserDetails").document(userId).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    Users user = documentSnapshot.toObject(Users.class);
+                    isAdmin = user.isAdmin();
+                    if (isAdmin) {
+                        Intent intentToAdminPage = new Intent(getApplicationContext(), AdminPanel.class);
+                        startActivity(intentToAdminPage);
+                        finish();
+                    } else if (!isAdmin) {
+                        Intent intent = new Intent(getApplicationContext(), NavHost.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
-            }
-        }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if(isAdmin){
-                    Intent intentToAdminPage = new Intent(getApplicationContext(),AdminPanel.class);
-                    startActivity(intentToAdminPage);
-                    finish();
-                }else{
-                    Intent intent = new Intent(getApplicationContext(),NavHost.class);
-                    startActivity(intent);
-                    finish();
-                }
-            }
-        });
+            });
         }
     }
 

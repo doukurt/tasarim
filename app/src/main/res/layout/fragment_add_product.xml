@@ -36,7 +36,7 @@
         android:id="@+id/editProductDetail"
         android:layout_width="214dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="14dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="Ürün Açıklaması"
         android:inputType="textPersonName"
@@ -49,25 +49,23 @@
         android:id="@+id/save"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="17dp"
+        android:layout_marginBottom="18dp"
         android:text="Kaydet"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/updateProductPrice" />
 
-    <EditText
+    <Spinner
         android:id="@+id/updateProductCategory"
-        android:layout_width="214dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        android:ems="10"
-        android:hint="Kategori"
-        android:inputType="textPersonName"
+        android:layout_width="209dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="23dp"
         app:layout_constraintBottom_toTopOf="@+id/updateProductPrice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editProductDetail" />
+
 
     <EditText
         android:id="@+id/updateProductPrice"

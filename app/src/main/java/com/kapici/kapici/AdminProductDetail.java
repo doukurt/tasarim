@@ -17,8 +17,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,13 +37,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class AdminProductDetail extends AppCompatActivity {
+public class AdminProductDetail extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     EditText updateName,updateDetail,updateCategory,updatePrice;
     ImageView updateImage;
-    String id, imageName;
+    String id, imageName,category;
     Uri imageData;
     Bitmap selectedImage;
+    int spinnerPosition=0;
+
 
     private FirebaseFirestore firebaseFirestore;
     private FirebaseStorage firebaseStorage;
@@ -49,21 +54,30 @@ public class AdminProductDetail extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_product_detail);
+        Spinner spinner = (Spinner) findViewById(R.id.updateCategory);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.Category, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
 
         Intent intent = getIntent();
         String name = intent.getExtras().getString("Name");
         String image = intent.getExtras().getString("Image");
         String price = intent.getExtras().getString("Price");
         String detail = intent.getExtras().getString("Detail");
-        String category = intent.getExtras().getString("Category");
+        String categorySpinner = intent.getExtras().getString("Category");
         imageName = intent.getExtras().getString("ImageName");
         id = intent.getExtras().getString("Id");
+
+        spinnerPosition=adapter.getPosition(categorySpinner);
+        spinner.setSelection(spinnerPosition);
+
 
         firebaseFirestore=FirebaseFirestore.getInstance();
         firebaseStorage=FirebaseStorage.getInstance();
         updateName=findViewById(R.id.updateName);
         updateDetail= findViewById(R.id.updateDetail);
-        updateCategory= findViewById(R.id.updateCategory);
         updatePrice= findViewById(R.id.updatePrice);
         updateImage = findViewById(R.id.updateImage);
 
@@ -72,7 +86,7 @@ public class AdminProductDetail extends AppCompatActivity {
         updateName.setText(name);
         updatePrice.setText(price);
         updateDetail.setText(detail);
-        updateCategory.setText(category);
+
         Picasso.get().load(image).into(updateImage);
 
     }
@@ -80,13 +94,12 @@ public class AdminProductDetail extends AppCompatActivity {
     public void updateProduct(View view){
         String updatedName = updateName.getText().toString();
         String updatedDetail = updateDetail.getText().toString();
-        String updatedCategory = updateCategory.getText().toString();
         String updatedPrice = updatePrice.getText().toString();
 
         HashMap<String,Object> updatedData= new HashMap<>();
         updatedData.put("productName",updatedName);
         updatedData.put("productDetail",updatedDetail);
-        updatedData.put("productCategory",updatedCategory);
+        updatedData.put("productCategory",category);
         updatedData.put("productPrice",updatedPrice);
 
         if(imageData!=null){
@@ -221,5 +234,15 @@ public class AdminProductDetail extends AppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        category=parent.getItemAtPosition(position).toString();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }

@@ -4,4 +4,10 @@
     <string name="Ara">Ara</string>
     <string name="Sepet">Sepet</string>
     <string name="Diğer">Diğer</string>
+    <string-array name="Category">
+        <item>Atıştırmalıklar</item>
+        <item>Sebze Meyve</item>
+        <item>Gazlı İçecekler</item>
+        <item>Süt ürünleri</item>
+    </string-array>
 </resources>
