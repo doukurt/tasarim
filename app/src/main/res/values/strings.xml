@@ -6,8 +6,12 @@
     <string name="Diğer">Diğer</string>
     <string-array name="Category">
         <item>Atıştırmalıklar</item>
-        <item>Sebze Meyve</item>
-        <item>Gazlı İçecekler</item>
-        <item>Süt ürünleri</item>
+        <item>Meyve Sebze</item>
+        <item>İçecekler</item>
+        <item>Temel Gıda</item>
+        <item>Hazır Gıda</item>
+        <item>Kahvaltılıklar</item>
+        <item>Kişisel Bakım</item>
+        <item>Ev Bakım</item>
     </string-array>
 </resources>

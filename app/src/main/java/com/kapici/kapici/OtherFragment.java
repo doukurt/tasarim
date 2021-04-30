@@ -46,8 +46,6 @@ public class OtherFragment extends ListFragment {
                 Intent intent = new Intent(getActivity().getApplicationContext(),SignIn.class);
                 startActivity(intent);
                 getActivity().finish();
-
-
             }
         });
     }

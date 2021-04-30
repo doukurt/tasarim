@@ -9,11 +9,24 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.kapici.kapici.Adapters.CategoryRecyclerAdapter;
 
 public class HomeFragment extends Fragment {
+
+    String[] category = {"Atıştırmalıklar","Meyve Sebze","İçecekler","Temel Gıda","Hazır Gıda","Kahvaltılıklar","Kişisel Bakım","Ev Bakım"};
+    CategoryRecyclerAdapter categoryRecyclerAdapter;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home,container,false);
+        View view =inflater.inflate(R.layout.fragment_home,container,false);
+        RecyclerView categoryList = view.findViewById(R.id.categoryList);
+        categoryList.setLayoutManager(new GridLayoutManager(getContext(),3));
+        categoryRecyclerAdapter=new CategoryRecyclerAdapter(category);
+        categoryList.setAdapter(categoryRecyclerAdapter);
+        return view;
     }
 }

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/single_category_product_id"
+    android:layout_width="120dp"
+    android:layout_height="170dp"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardCornerRadius="4dp">
+
+    <LinearLayout
+        android:layout_width="125dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/listProductImage"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:background="@color/design_default_color_primary"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/listProductName"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:gravity="center"
+            android:text="Product Name"
+            android:textColor="@color/black"
+            android:textSize="13sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/decrease"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:text="-"
+                android:textSize="8sp" />
+
+            <EditText
+                android:id="@+id/productCount"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="@null"
+                android:ems="10"
+                android:inputType="number"
+                android:selectAllOnFocus="true"
+                android:text="1"
+                android:textAlignment="center" />
+
+            <Button
+                android:id="@+id/increase"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:text="+"
+                android:textSize="7sp" />
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addCart"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="Sepete Ekle"
+            android:textSize="8sp" />
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
