@@ -6,28 +6,40 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.ListFragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-public class OtherFragment extends ListFragment {
+public class OtherFragment extends Fragment {
     View view;
     FirebaseAuth firebaseAuth;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_other,container,false);
 
+
+        ListView listView = view.findViewById(R.id.otherList);
         String[] values = new String[] { "Profil", "Adres", "Uygulama Hakkında"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, values);
-        setListAdapter(adapter);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                System.out.println(values[position]);
+            }
+        });
+
+
 
         view.findViewById(R.id.cikis);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -38,6 +50,7 @@ public class OtherFragment extends ListFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         Button button = view.findViewById(R.id.cikis);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

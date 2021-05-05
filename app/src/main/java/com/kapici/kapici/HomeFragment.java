@@ -23,10 +23,12 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_home,container,false);
+
         RecyclerView categoryList = view.findViewById(R.id.categoryList);
         categoryList.setLayoutManager(new GridLayoutManager(getContext(),3));
         categoryRecyclerAdapter=new CategoryRecyclerAdapter(category);
         categoryList.setAdapter(categoryRecyclerAdapter);
         return view;
     }
+
 }

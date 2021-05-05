@@ -9,9 +9,9 @@
 
 
     <ListView
-        android:id="@android:id/list"
+        android:id="@+id/otherList"
         android:layout_width="match_parent"
-        android:layout_height="554dp"/>
+        android:layout_height="558dp" />
 
     <Button
         android:id="@+id/cikis"

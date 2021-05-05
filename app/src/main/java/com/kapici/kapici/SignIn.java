@@ -41,6 +41,7 @@ public class SignIn extends AppCompatActivity {
 
         signInEmail = findViewById(R.id.signInEmail);
         signInPassword = findViewById(R.id.signInPassword);
+        signInEmail.onEndBatchEdit();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if (currentUser != null) {
@@ -52,15 +53,14 @@ public class SignIn extends AppCompatActivity {
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     Users user = documentSnapshot.toObject(Users.class);
                     isAdmin = user.isAdmin();
+                    Intent intentToAdminPage = new Intent();
                     if (isAdmin) {
-                        Intent intentToAdminPage = new Intent(getApplicationContext(), AdminPanel.class);
-                        startActivity(intentToAdminPage);
-                        finish();
-                    } else if (!isAdmin) {
-                        Intent intent = new Intent(getApplicationContext(), NavHost.class);
-                        startActivity(intent);
-                        finish();
+                        intentToAdminPage.setClass(getApplicationContext(), AdminPanel.class);
+                    } else {
+                        intentToAdminPage.setClass(getApplicationContext(), NavHost.class);
                     }
+                    startActivity(intentToAdminPage);
+                    finish();
                 }
             });
         }
