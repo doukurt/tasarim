@@ -16,10 +16,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.kapici.kapici.Models.Products;
 
 public class OtherFragment extends Fragment {
     View view;
     FirebaseAuth firebaseAuth;
+
 
     @Nullable
     @Override
@@ -28,18 +32,25 @@ public class OtherFragment extends Fragment {
 
 
         ListView listView = view.findViewById(R.id.otherList);
-        String[] values = new String[] { "Profil", "Adres", "Uygulama Hakkında"};
+        String[] values = new String[] { "Profil", "Uygulama Hakkında"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
                 android.R.layout.simple_list_item_1, values);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println(values[position]);
+                Intent intent = new Intent();
+                switch (values[position]){
+                    case "Profil":
+                        intent.setClass(getContext(), Profile.class);
+                        startActivity(intent);
+                        break;
+                    case "Uygulama Hakkında":
+                        //intent.setClass(getContext(), About.class);
+                        break;
+                }
             }
         });
-
-
 
         view.findViewById(R.id.cikis);
         firebaseAuth = FirebaseAuth.getInstance();

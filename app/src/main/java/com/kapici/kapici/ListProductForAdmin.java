@@ -68,7 +68,6 @@ public class ListProductForAdmin extends Fragment {
                 if(error != null){
                     //Toast.makeText(getActivity(),error.getLocalizedMessage().toString(),Toast.LENGTH_LONG).show();
                 }
-
                 if(value!=null){
                     for (DocumentSnapshot snapshot:value.getDocuments()){
                         Map<String,Object> data = snapshot.getData();
@@ -78,6 +77,7 @@ public class ListProductForAdmin extends Fragment {
                         String  detail= (String) data.get("productDetail");
                         String category = (String) data.get("productCategory");
                         String  imageName= (String) data.get("productImageName");
+
 
 
 

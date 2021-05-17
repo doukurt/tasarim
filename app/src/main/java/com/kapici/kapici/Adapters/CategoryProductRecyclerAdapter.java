@@ -25,6 +25,8 @@ public class CategoryProductRecyclerAdapter extends RecyclerView.Adapter<Categor
     private ArrayList<String> productDetailList;
     private ArrayList<String> productCategoryList;
     private ArrayList<String> productImageNameList;
+    ArrayList<String> shoppingCart =new ArrayList<>();
+    //ArrayList<String> cartQuantities =new ArrayList<>();
     int i;
 
     public CategoryProductRecyclerAdapter(ArrayList<String> productNameList, ArrayList<String> productPriceList, ArrayList<String> productImageList, ArrayList<String> productIdList, ArrayList<String> productDetailList, ArrayList<String> productCategoryList, ArrayList<String> productImageNameList) {
@@ -65,6 +67,15 @@ public class CategoryProductRecyclerAdapter extends RecyclerView.Adapter<Categor
                     i--;
                     holder.productCount.setText(String.valueOf(i));
                 }
+            }
+        });
+        holder.addCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                shoppingCart.add(productIdList.get(position));
+                System.out.println(shoppingCart);
+
             }
         });
 

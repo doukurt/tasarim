@@ -18,9 +18,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
 import com.kapici.kapici.Models.Users;
 
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -97,7 +99,7 @@ public class SignUp extends AppCompatActivity {
                     FirebaseUser user=firebaseAuth.getCurrentUser();
                     String userId = user.getUid();
 
-                    Users newUser=new Users(name,surname,birthday,phoneNumber,address);
+                    Users newUser = new Users(name,surname,birthday,phoneNumber,address, Arrays.asList(),Arrays.asList());
 
                     firebaseFirestore.collection("UserDetails").document(userId).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

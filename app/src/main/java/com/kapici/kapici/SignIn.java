@@ -94,7 +94,6 @@ public class SignIn extends AppCompatActivity {
                             DocumentSnapshot document = task.getResult();
                             Map<String, Object> data=document.getData();
                             isAdmin=(boolean) data.get("admin");
-                            System.out.println("onQuery"+isAdmin);
                         }
                     }
                 }).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
