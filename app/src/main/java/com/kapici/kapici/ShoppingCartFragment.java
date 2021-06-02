@@ -123,7 +123,7 @@ public class ShoppingCartFragment extends Fragment {
                                 cartImagesFromDb.add(pImage);
                                 cartDataFromDB.add(pName);
                                 cartPricesFromDb.add(pPrice);
-                                totalPriceHolder.setText(String.valueOf(totalPrice));
+                                totalPriceHolder.setText(String.valueOf(totalPrice)+"₺");
                                 cartRecyclerAdapter.notifyDataSetChanged();
                             }
                         });

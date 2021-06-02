@@ -109,8 +109,11 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                                     });
                         }else if (shoppingCart.contains(productIdList.get(position))){
                             int index = shoppingCart.indexOf(productIdList.get(position));
-                            cartQuantities.set(index,holder.productCount.getText().toString());
-                            totalPrice+= Long.parseLong(cartQuantities.get(position))*Long.parseLong(productPriceList.get(position));
+                            int cartQuantitForUpdate= Integer.parseInt(cartQuantities.get(position));
+                            int productCountForUpdate = Integer.parseInt(holder.productCount.getText().toString());
+                            int newQuantity = cartQuantitForUpdate+productCountForUpdate;
+                            cartQuantities.set(index, String.valueOf(newQuantity));
+                            totalPrice+= Long.parseLong(holder.productCount.getText().toString())*Long.parseLong(productPriceList.get(position));
                             firebaseFirestore.collection("UserDetails").document(id).update("cartQuantities",cartQuantities,"cartTotal",totalPrice).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {

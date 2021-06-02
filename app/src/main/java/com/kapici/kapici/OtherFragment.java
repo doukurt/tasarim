@@ -14,6 +14,8 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,7 +48,8 @@ public class OtherFragment extends Fragment {
                         startActivity(intent);
                         break;
                     case "Uygulama Hakkında":
-                        //intent.setClass(getContext(), About.class);
+                        intent.setClass(getContext(),AboutApp.class);
+                        startActivity(intent);
                         break;
                 }
             }

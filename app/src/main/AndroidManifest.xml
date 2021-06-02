@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Kapici">
+        <activity android:name=".AboutApp"></activity>
         <activity android:name=".Profile" />
         <activity android:name=".CategoryProductList" />
         <activity android:name=".AdminProductDetail" />

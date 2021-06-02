@@ -99,7 +99,7 @@ public class CategoryProductRecyclerAdapter extends RecyclerView.Adapter<Categor
                             totalPrice+= Long.parseLong(String.valueOf(holder.productCount.getText()))*Long.parseLong(productPriceList.get(position));
                             cartQuantities.add(holder.productCount.getText().toString());
                             shoppingCart.add(productIdList.get(position));
-                            firebaseFirestore.collection("UserDetails").document(id).update("shoppingCart",shoppingCart,"cartQuantities",cartQuantities)
+                            firebaseFirestore.collection("UserDetails").document(id).update("shoppingCart",shoppingCart,"cartQuantities",cartQuantities,"cartTotal",totalPrice)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
@@ -108,9 +108,12 @@ public class CategoryProductRecyclerAdapter extends RecyclerView.Adapter<Categor
                                     });
                         }else if (shoppingCart.contains(productIdList.get(position))){
                             int index = shoppingCart.indexOf(productIdList.get(position));
-                            totalPrice+= Long.parseLong(cartQuantities.get(position))*Long.parseLong(productPriceList.get(position));
-                            cartQuantities.set(index,holder.productCount.getText().toString());
-                            firebaseFirestore.collection("UserDetails").document(id).update("cartQuantities",cartQuantities).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            int cartQuantitForUpdate= Integer.parseInt(cartQuantities.get(position));
+                            int productCountForUpdate = Integer.parseInt(holder.productCount.getText().toString());
+                            int newQuantity = cartQuantitForUpdate+productCountForUpdate;
+                            cartQuantities.set(index, String.valueOf(newQuantity));
+                            totalPrice+= Long.parseLong(holder.productCount.getText().toString())*Long.parseLong(productPriceList.get(position));
+                            firebaseFirestore.collection("UserDetails").document(id).update("cartQuantities",cartQuantities,"cartTotal",totalPrice).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(holder.itemView.getContext(),"Sepete Başarıyla Eklendi",Toast.LENGTH_SHORT).show();
