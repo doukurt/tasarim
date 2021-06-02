@@ -8,98 +8,91 @@
 
     <EditText
         android:id="@+id/signInPassword"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="283dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginBottom="14dp"
         android:ems="10"
         android:hint="Password"
         android:inputType="textPassword"
         android:textAlignment="center"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/textView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signInEmail" />
 
     <Button
         android:id="@+id/signUp"
-        android:layout_width="144dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="48dp"
+        android:layout_width="150dp"
+        android:layout_height="63dp"
+        android:layout_marginEnd="35dp"
         android:onClick="kayitol"
         android:text="Kayıt Ol"
-        android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="16sp"
+        app:layout_constraintBaseline_toBaselineOf="@+id/signIn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInWithGoogle"
-        app:layout_constraintVertical_bias="0.268" />
+        app:layout_constraintStart_toEndOf="@+id/signIn" />
 
     <Button
         android:id="@+id/signIn"
-        android:layout_width="144dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="44dp"
+        android:layout_width="150dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="37dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="135dp"
         android:backgroundTintMode="screen"
         android:hapticFeedbackEnabled="true"
         android:onClick="signIn"
         android:text="Giriş Yap"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/signInWithGoogle"
-        app:layout_constraintHorizontal_bias="0.546"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInPassword" />
-
-    <Button
-        android:id="@+id/forgetPassword"
-        android:layout_width="144dp"
-        android:layout_height="60dp"
-        android:onClick="sifreunut"
-        android:text="Şifremi Unuttum"
-        android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/signUp"
-        app:layout_constraintHorizontal_bias="0.546"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signIn"
-        app:layout_constraintVertical_bias="0.268" />
-
-    <Button
-        android:id="@+id/signInWithGoogle"
-        android:layout_width="144dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="48dp"
-        android:backgroundTintMode="screen"
-        android:hapticFeedbackEnabled="true"
-        android:text="Google"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
         android:id="@+id/signInEmail"
-        android:layout_width="350dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="200dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="21dp"
         android:ems="10"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@+id/signInPassword"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="342dp"
-        android:layout_height="137dp"
+        android:layout_width="347dp"
+        android:layout_height="143dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="31dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginBottom="32dp"
         app:layout_constraintBottom_toTopOf="@+id/signInEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/logo" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="53dp"
+        android:onClick="goToForgetPassword"
+        android:text="Şifremi Unuttum"
+        android:textColor="@color/design_default_color_primary"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/signIn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/signInPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

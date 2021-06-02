@@ -11,8 +11,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.kapici.kapici.Adapters.CategoryRecyclerAdapter;
+import com.kapici.kapici.Adapters.ImageAdapter;
 
 public class HomeFragment extends Fragment {
 
@@ -28,6 +30,10 @@ public class HomeFragment extends Fragment {
         categoryList.setLayoutManager(new GridLayoutManager(getContext(),3));
         categoryRecyclerAdapter=new CategoryRecyclerAdapter(category);
         categoryList.setAdapter(categoryRecyclerAdapter);
+
+        ViewPager viewPager = view.findViewById(R.id.imageSlider);
+        ImageAdapter imageAdapter = new ImageAdapter(getContext());
+        viewPager.setAdapter(imageAdapter);
         return view;
     }
 

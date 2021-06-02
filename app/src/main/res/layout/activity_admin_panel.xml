@@ -15,21 +15,24 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/addProduct"
-                android:layout_width="205dp"
-                android:layout_height="match_parent"
-                android:onClick="addProduct"
-                android:text="Ürün Ekle" />
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <Button
-                android:id="@+id/listProduct"
-                android:layout_width="205dp"
-                android:layout_height="match_parent"
-                android:onClick="listProduct"
-                android:text="Ürünleri Listele" />
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ürün Listele"
+                    />
+
+                <com.google.android.material.tabs.TabItem
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ürün Ekle"/>
 
 
+            </com.google.android.material.tabs.TabLayout>
         </LinearLayout>
     <FrameLayout
         android:layout_width="match_parent"

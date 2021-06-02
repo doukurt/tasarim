@@ -28,7 +28,7 @@ import com.squareup.picasso.Picasso;
 public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAdapter.SearchViewHolder> {
     ArrayList<String> shoppingCart =new ArrayList<>();
     ArrayList<String> cartQuantities =new ArrayList<>();
-
+    private long totalPrice;
     private ArrayList<String> productNameList;
     private ArrayList<String> productPriceList;
     private ArrayList<String> productImageList;
@@ -62,6 +62,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
     public void onBindViewHolder(@NonNull SearchViewHolder holder, int position) {
         holder.productName.setText(productNameList.get(position));
         Picasso.get().load(productImageList.get(position)).into(holder.productImage);
+        holder.productPrice.setText(String.format("%s₺", productPriceList.get(position)));
         holder.increase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -93,20 +94,24 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                         assert user != null;
                         shoppingCart= (ArrayList<String>) user.getShoppingCart();
                         cartQuantities= (ArrayList<String>) user.getCartQuantities();
+                        totalPrice = user.getCartTotal();
                         if (!shoppingCart.contains(productIdList.get(position))){
+                            totalPrice+= Long.parseLong(String.valueOf(holder.productCount.getText()))*Long.parseLong(productPriceList.get(position));
                             cartQuantities.add(holder.productCount.getText().toString());
                             shoppingCart.add(productIdList.get(position));
-                            firebaseFirestore.collection("UserDetails").document(id).update("shoppingCart",shoppingCart,"cartQuantities",cartQuantities)
+                            firebaseFirestore.collection("UserDetails").document(id).update("shoppingCart",shoppingCart,"cartQuantities",cartQuantities,"cartTotal",totalPrice)
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(holder.itemView.getContext(),"Sepete Başarıyla Eklendi",Toast.LENGTH_LONG).show();
+
                                         }
                                     });
                         }else if (shoppingCart.contains(productIdList.get(position))){
                             int index = shoppingCart.indexOf(productIdList.get(position));
                             cartQuantities.set(index,holder.productCount.getText().toString());
-                            firebaseFirestore.collection("UserDetails").document(id).update("cartQuantities",cartQuantities).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            totalPrice+= Long.parseLong(cartQuantities.get(position))*Long.parseLong(productPriceList.get(position));
+                            firebaseFirestore.collection("UserDetails").document(id).update("cartQuantities",cartQuantities,"cartTotal",totalPrice).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Toast.makeText(holder.itemView.getContext(),"Sepete Başarıyla Eklendi",Toast.LENGTH_LONG).show();
@@ -126,7 +131,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
 
     class SearchViewHolder extends RecyclerView.ViewHolder{
         ImageView productImage;
-        TextView productName;
+        TextView productName,productPrice;
         EditText productCount;
         CardView cardView;
         Button increase,decrease,addCart;
@@ -140,6 +145,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
             increase=itemView.findViewById(R.id.increase);
             decrease=itemView.findViewById(R.id.decrease);
             addCart=itemView.findViewById(R.id.addCart);
+            productPrice=itemView.findViewById(R.id.listProductPrice);
             cardView=itemView.findViewById(R.id.single_category_product_id);
         }
     }

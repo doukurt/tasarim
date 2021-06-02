@@ -1,11 +1,14 @@
 package com.kapici.kapici;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,7 +52,11 @@ public class ShoppingCartFragment extends Fragment {
     FirebaseUser currentUser;
     String pName,pPrice,pImage;
     CartRecyclerAdapter cartRecyclerAdapter;
-    LinearLayout emptyCart;
+    LinearLayout emptyCart,cartConfirm;
+    Button confirmCart;
+    TextView totalPriceHolder;
+    int i;
+    long totalPrice;
 
 
     @Nullable
@@ -65,49 +72,32 @@ public class ShoppingCartFragment extends Fragment {
         cartQuantitiesFromDb=new ArrayList<>();
         cartIdsFromDb=new ArrayList<>();
         emptyCart= view.findViewById(R.id.emptyCart);
+        cartConfirm = view.findViewById(R.id.cartConfirm);
+        confirmCart = view.findViewById(R.id.confirmButton);
+        totalPriceHolder= view.findViewById(R.id.totalPriceHolder);
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser = firebaseAuth.getCurrentUser();
         firebaseFirestore = FirebaseFirestore.getInstance();
+        cartConfirm.setVisibility(View.INVISIBLE);
 
         getCartDataFromDB();
-
         cartList = view.findViewById(R.id.cartRecyclerView);
         cartList.setLayoutManager(new LinearLayoutManager(getContext()));
         cartRecyclerAdapter = new CartRecyclerAdapter(cartDataFromDB,cartPricesFromDb,cartImagesFromDb,cartQuantitiesFromDb,cartIdsFromDb);
         cartList.setAdapter(cartRecyclerAdapter);
 
-        cartRecyclerAdapter.setOnItemClickListener(new CartRecyclerAdapter.OnItemClickListener() {
+        confirmCart.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDeleteClick(int position) {
-                removeItem(position);
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                PaymentPage paymentPage = new PaymentPage();
+                fragmentTransaction.replace(R.id.fragment_container,paymentPage).commit();
             }
         });
 
         return view;
     }
-
-    public void removeItem(int position){
-        firebaseFirestore.collection("UserDetails").document(currentUser.getUid())
-                .update("shoppingCart", FieldValue.arrayRemove(cartIdsFromDb.get(position))
-                        ,"cartQuantities",FieldValue.arrayRemove(cartQuantitiesFromDb.get(position))).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(getContext(),"Sepetten bir ürün kaldırıldı",Toast.LENGTH_LONG).show();
-               //Fragmentı yenileme
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                ShoppingCartFragment shoppingCartFragment = new ShoppingCartFragment();
-                fragmentTransaction.replace(R.id.fragment_container,shoppingCartFragment).commit();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println(e.getLocalizedMessage());
-            }
-        });
-
-    }
-
 
     public void getCartDataFromDB() {
         String uid = currentUser.getUid();
@@ -119,34 +109,35 @@ public class ShoppingCartFragment extends Fragment {
                     Map<String, Object> data = value.getData();
                     shoppingCart = (ArrayList<String>) data.get("shoppingCart");
                     cartQuantities = (ArrayList<String>) data.get("cartQuantities");
-                    for (int i = 0; i < shoppingCart.size(); i++) {
+                    totalPrice = (long) data.get("cartTotal");
+                    for (i= 0; i < shoppingCart.size(); i++) {
                         cartQuantitiesFromDb.add(cartQuantities.get(i));
                         cartIdsFromDb.add(shoppingCart.get(i));
-                        firebaseFirestore.collection("Products").document(shoppingCart.get(i)).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                        firebaseFirestore.collection("Products").document(shoppingCart.get(i)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                             @Override
-                            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                Products product = value.toObject(Products.class);
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                Products product = documentSnapshot.toObject(Products.class);
                                 pName = product.getProductName();
                                 pImage= product.getProductImage();
                                 pPrice=product.getProductPrice();
                                 cartImagesFromDb.add(pImage);
                                 cartDataFromDB.add(pName);
                                 cartPricesFromDb.add(pPrice);
+                                totalPriceHolder.setText(String.valueOf(totalPrice));
                                 cartRecyclerAdapter.notifyDataSetChanged();
-                                if (cartIdsFromDb.size()>=1){
-                                    emptyCart.setVisibility(View.INVISIBLE);
-                                    cartList.setVisibility(View.VISIBLE);
-                                }else if (cartIdsFromDb.size()==0){
-                                    emptyCart.setVisibility(View.VISIBLE);
-                                    cartList.setVisibility(View.INVISIBLE);
-                                }
                             }
                         });
+                        if (cartIdsFromDb.size()>0){
+                            emptyCart.setVisibility(View.INVISIBLE);
+                            cartConfirm.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
-
             }
         });
     }
+
+
+
 
 }

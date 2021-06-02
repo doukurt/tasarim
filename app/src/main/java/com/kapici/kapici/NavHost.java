@@ -6,10 +6,14 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class NavHost extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -99,7 +99,7 @@ public class SignUp extends AppCompatActivity {
                     FirebaseUser user=firebaseAuth.getCurrentUser();
                     String userId = user.getUid();
 
-                    Users newUser = new Users(name,surname,birthday,phoneNumber,address, Arrays.asList(),Arrays.asList());
+                    Users newUser = new Users(name,surname,birthday,phoneNumber,address, Arrays.asList(),Arrays.asList(),0,Arrays.asList());
 
                     firebaseFirestore.collection("UserDetails").document(userId).set(newUser).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override

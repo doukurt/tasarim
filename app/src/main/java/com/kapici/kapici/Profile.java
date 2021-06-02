@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -20,6 +22,7 @@ import com.kapici.kapici.Models.Users;
 public class Profile extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     FirebaseFirestore firebaseFirestore;
+    FirebaseUser currentUser;
     String uName,uSurname,uBirthday,uPhone,uAdres;
     TextView userName,userSurname,userBirthday;
     EditText userPhone,userAdres;
@@ -30,7 +33,7 @@ public class Profile extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
-
+        currentUser = firebaseAuth.getCurrentUser();
         userName= findViewById(R.id.profileName);
         userSurname = findViewById(R.id.profileSurname);
         userBirthday = findViewById(R.id.profilebirthday);
@@ -42,8 +45,6 @@ public class Profile extends AppCompatActivity {
     }
 
     public void getProfileData(){
-        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
         if (currentUser != null) {
 
             String userId = currentUser.getUid();
@@ -67,5 +68,13 @@ public class Profile extends AppCompatActivity {
         userBirthday.setText(uBirthday);
         userPhone.setText(uPhone);
         userAdres.setText(uAdres);
+    }
+    public void updateProfile(View view){
+        firebaseFirestore.collection("UserDetails").document(currentUser.getUid()).update("phoneNumber",userPhone.getText().toString(),"address",userAdres.getText().toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(Profile.this,"Başarıyla Güncellendi",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

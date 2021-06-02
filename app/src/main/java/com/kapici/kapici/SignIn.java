@@ -133,7 +133,7 @@ public class SignIn extends AppCompatActivity {
         startActivity(intent);
 
     }
-    public void sifreunut (View view){
+    public void goToForgetPassword (View view){
 
         Intent intent = new Intent(SignIn.this,ForgetPassword.class);
         startActivity(intent);

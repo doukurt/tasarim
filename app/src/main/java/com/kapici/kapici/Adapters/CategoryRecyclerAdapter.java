@@ -17,7 +17,9 @@ import com.kapici.kapici.R;
 
 public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryHolder> {
     private String[] categoryList={};
-
+    int[] categoryPhoto={R.drawable.snack,R.drawable.fruits,R.drawable.drinks,
+                         R.drawable.gida,R.drawable.hazir,R.drawable.kahvalti,
+                         R.drawable.kisisel,R.drawable.evbakim};
     public CategoryRecyclerAdapter(String[] categoryList) {
         this.categoryList = categoryList;
     }
@@ -33,7 +35,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
     @Override
     public void onBindViewHolder(@NonNull CategoryHolder holder, int position) {
         holder.categoryName.setText(categoryList[position]);
-
+        holder.categoryImage.setImageResource(categoryPhoto[position]);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -10,6 +10,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -17,11 +20,14 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.kapici.kapici.Models.Users;
 import com.kapici.kapici.R;
 import com.kapici.kapici.ShoppingCartFragment;
 import com.squareup.picasso.Picasso;
 
+import java.security.CryptoPrimitive;
 import java.util.ArrayList;
 
 public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapter.CartViewHolder> {
@@ -30,21 +36,14 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
     private ArrayList<String> cartImageList;
     private ArrayList<String> cartQuantityList;
     private ArrayList<String> cartIdList;
-    private OnItemClickListener mListener;
-
-    public interface OnItemClickListener {
-        void onDeleteClick(int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener listener) {
-        mListener = listener;
-    }
-
-    int a;
+    public int a,quantity,price;
+    long totalPrice;
+    Users user = new Users();
     private FirebaseFirestore firebaseFirestore=FirebaseFirestore.getInstance();
     FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-    public CartRecyclerAdapter(ArrayList<String> cartNameList, ArrayList<String> cartPriceList, ArrayList<String> cartImageList, ArrayList<String> cartQuantityList,ArrayList<String> cartIdList) {
+    public CartRecyclerAdapter(ArrayList<String> cartNameList, ArrayList<String> cartPriceList, ArrayList<String> cartImageList, ArrayList<String> cartQuantityList, ArrayList<String> cartIdList) {
         this.cartNameList = cartNameList;
         this.cartPriceList = cartPriceList;
         this.cartImageList = cartImageList;
@@ -54,10 +53,9 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.single_cart,parent,false);
-        CartViewHolder cartViewHolder = new CartViewHolder(view,mListener);
-        return cartViewHolder;
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.single_cart,parent,false);
+        return new CartViewHolder(view);
     }
 
     @Override
@@ -72,6 +70,25 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
                 a= Integer.parseInt(holder.cartPcount.getText().toString());
                 a++;
                 holder.cartPcount.setText(String.valueOf(a));
+                cartQuantityList.set(position,String.valueOf(a));
+                firebaseFirestore.collection("UserDetails").document(currentUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Users user = documentSnapshot.toObject(Users.class);
+                        long total = user.getCartTotal();
+                        total+= Long.parseLong(cartPriceList.get(position));
+                        firebaseFirestore.collection("UserDetails").document(currentUser.getUid()).update("cartQuantities",cartQuantityList,"cartTotal",total).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                FragmentManager fragmentManager = ((AppCompatActivity)v.getContext()).getSupportFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                ShoppingCartFragment shoppingCartFragment = new ShoppingCartFragment();
+                                fragmentTransaction.replace(R.id.fragment_container,shoppingCartFragment).commit();
+                            }
+                        });
+                    }
+                });
+
             }
         });
         holder.cartDecrase.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +98,28 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
                 if (a>1){
                     a--;
                     holder.cartPcount.setText(String.valueOf(a));
+                    cartQuantityList.set(position,String.valueOf(a));
+                    firebaseFirestore.collection("UserDetails").document(currentUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            Users user = documentSnapshot.toObject(Users.class);
+                            long total = user.getCartTotal();
+                            total-= Long.parseLong(cartPriceList.get(position));
+                            firebaseFirestore.collection("UserDetails").document(currentUser.getUid()).update("cartQuantities",cartQuantityList,"cartTotal",total).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void aVoid) {
+                                    FragmentManager fragmentManager = ((AppCompatActivity)v.getContext()).getSupportFragmentManager();
+                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                    ShoppingCartFragment shoppingCartFragment = new ShoppingCartFragment();
+                                    fragmentTransaction.replace(R.id.fragment_container,shoppingCartFragment).commit();
+                                }
+                            });
+                        }
+                    });
+
+
+
+
                 }
             }
         });
@@ -99,7 +138,7 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
         Button cartDecrase,cartIncrase,deleteCartItem;
 
 
-        public CartViewHolder(@NonNull View itemView, OnItemClickListener listener) {
+        public CartViewHolder(@NonNull View itemView) {
             super(itemView);
             cartPcount=itemView.findViewById(R.id.cartPcount);
             cartPname=itemView.findViewById(R.id.cartPname);
@@ -109,17 +148,42 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
             cartDecrase=itemView.findViewById(R.id.cartDecrase);
             deleteCartItem=itemView.findViewById(R.id.deleteCartItem);
 
+
+
             deleteCartItem.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            listener.onDeleteClick(position);
+
+                            firebaseFirestore.collection("UserDetails").document(currentUser.getUid()).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    user = documentSnapshot.toObject(Users.class);
+                                    totalPrice =user.getCartTotal();
+                                    totalPrice-=(Long.parseLong(cartPriceList.get(position))*Long.parseLong(cartQuantityList.get(position)));
+                                    firebaseFirestore.collection("UserDetails").document(currentUser.getUid())
+                                            .update("shoppingCart", FieldValue.arrayRemove(cartIdList.get(position))
+                                                    ,"cartQuantities", FieldValue.arrayRemove(cartQuantityList.get(position)),"cartTotal",totalPrice).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void aVoid) {
+                                            Toast.makeText(v.getContext(),"Sepetten bir ürün kaldırıldı",Toast.LENGTH_SHORT).show();
+                                            FragmentManager fragmentManager = ((AppCompatActivity)v.getContext()).getSupportFragmentManager();
+                                            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                            ShoppingCartFragment shoppingCartFragment = new ShoppingCartFragment();
+                                            fragmentTransaction.replace(R.id.fragment_container,shoppingCartFragment).commit();
+                                        }
+                                    }).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            System.out.println(e.getLocalizedMessage());
+                                        }
+                                    });
+                                }
+                            });
+
                         }
                     }
-                }
             });
 
 

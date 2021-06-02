@@ -1,84 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".Profile">
 
     <TextView
-        android:id="@+id/profileSurname"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="10dp"
-        android:text="TextView"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/profilebirthday"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileName" />
-
-    <TextView
-        android:id="@+id/profilebirthday"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="13dp"
-        android:text="TextView"
-        android:textColor="#000000"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/profilePhone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileSurname" />
-
+        android:id="@+id/textView4"
+        android:layout_width="35dp"
+        android:layout_height="23dp"
+        android:text="Ad" />
     <TextView
         android:id="@+id/profileName"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="393dp"
+        android:layout_height="41dp"
         android:text="TextView"
         android:textColor="#000000"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/profileSurname"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Soyad" />
+    <TextView
+        android:id="@+id/profileSurname"
+        android:layout_width="393dp"
+        android:layout_height="41dp"
+        android:text="TextView"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Doğum Tarihi" />
+    <TextView
+        android:id="@+id/profilebirthday"
+        android:layout_width="393dp"
+        android:layout_height="41dp"
+        android:text="TextView"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Telefon Numarası" />
+    <EditText
+        android:id="@+id/profilePhone"
+        android:layout_width="393dp"
+        android:layout_height="50dp"
+        android:ems="10"
+        android:inputType="phone"
+        android:textSize="24sp" />
+
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adres"/>
 
     <EditText
         android:id="@+id/profileAdress"
-        android:layout_width="396dp"
-        android:layout_height="151dp"
-        android:layout_marginBottom="152dp"
+        android:layout_width="395dp"
+        android:layout_height="131dp"
         android:ems="10"
         android:inputType="textPostalAddress"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/profileSubmit"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilePhone" />
-
-    <EditText
-        android:id="@+id/profilePhone"
-        android:layout_width="396dp"
-        android:layout_height="52dp"
-        android:layout_marginBottom="20dp"
-        android:ems="10"
-        android:inputType="phone"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/profileAdress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profilebirthday" />
+        android:textSize="24sp" />
 
     <Button
         android:id="@+id/profileSubmit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="59dp"
-        android:text="Button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profileAdress" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:onClick="updateProfile"
+        android:text="Güncelle"
+        android:layout_marginTop="35dp"
+        android:layout_gravity="center"/>
+
+
+</LinearLayout>

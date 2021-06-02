@@ -11,10 +11,12 @@ public class Users {
     private boolean isAdmin;
     private List<String> shoppingCart;
     private List<String> cartQuantities;
+    private long cartTotal;
+    private List<String> orderList;
     public Users() {
     }
 
-    public Users(String name, String surname, String birthday, String phoneNumber, String address, List<String> shoppingCart, List<String> cartQuantities) {
+    public Users(String name, String surname, String birthday, String phoneNumber, String address, List<String> shoppingCart, List<String> cartQuantities,long cartTotal,List<String> orderList) {
         this.name = name;
         this.surname = surname;
         this.birthday = birthday;
@@ -23,6 +25,8 @@ public class Users {
         this.isAdmin = false;
         this.shoppingCart = shoppingCart;
         this.cartQuantities = cartQuantities;
+        this.cartTotal= cartTotal;
+        this.orderList=orderList;
     }
 
     public String getName() {
@@ -87,5 +91,21 @@ public class Users {
 
     public void setCartQuantities(List<String> cartQuantities) {
         this.cartQuantities = cartQuantities;
+    }
+
+    public long getCartTotal() {
+        return cartTotal;
+    }
+
+    public void setCartTotal(long cartTotal) {
+        this.cartTotal = cartTotal;
+    }
+
+    public List<String> getOrderList() {
+        return orderList;
+    }
+
+    public void setOrderList(List<String> orderList) {
+        this.orderList = orderList;
     }
 }
