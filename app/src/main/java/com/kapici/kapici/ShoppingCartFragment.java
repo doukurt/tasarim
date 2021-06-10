@@ -110,23 +110,10 @@ public class ShoppingCartFragment extends Fragment {
                     shoppingCart = (ArrayList<String>) data.get("shoppingCart");
                     cartQuantities = (ArrayList<String>) data.get("cartQuantities");
                     totalPrice = (long) data.get("cartTotal");
-                    for (i= 0; i < shoppingCart.size(); i++) {
-                        cartQuantitiesFromDb.add(cartQuantities.get(i));
+                    for (i= 0; i <shoppingCart.size(); i++) {
                         cartIdsFromDb.add(shoppingCart.get(i));
-                        firebaseFirestore.collection("Products").document(shoppingCart.get(i)).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                Products product = documentSnapshot.toObject(Products.class);
-                                pName = product.getProductName();
-                                pImage= product.getProductImage();
-                                pPrice=product.getProductPrice();
-                                cartImagesFromDb.add(pImage);
-                                cartDataFromDB.add(pName);
-                                cartPricesFromDb.add(pPrice);
-                                totalPriceHolder.setText(String.valueOf(totalPrice)+"₺");
-                                cartRecyclerAdapter.notifyDataSetChanged();
-                            }
-                        });
+                        cartQuantitiesFromDb.add(cartQuantities.get(i));
+                        getProductDetail();
                         if (cartIdsFromDb.size()>0){
                             emptyCart.setVisibility(View.INVISIBLE);
                             cartConfirm.setVisibility(View.VISIBLE);
@@ -135,6 +122,24 @@ public class ShoppingCartFragment extends Fragment {
                 }
             }
         });
+    }
+    public void getProductDetail(){
+        firebaseFirestore.collection("Products").document(shoppingCart.get(i)).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
+                Products product = value.toObject(Products.class);
+                pName = product.getProductName();
+                pImage= product.getProductImage();
+                pPrice=product.getProductPrice();
+                cartImagesFromDb.add(pImage);
+                cartDataFromDB.add(pName);
+                cartPricesFromDb.add(pPrice);
+                System.out.println(cartDataFromDB);
+                totalPriceHolder.setText(String.valueOf(totalPrice)+"₺");
+                cartRecyclerAdapter.notifyDataSetChanged();
+            }
+        });
+
     }
 
 

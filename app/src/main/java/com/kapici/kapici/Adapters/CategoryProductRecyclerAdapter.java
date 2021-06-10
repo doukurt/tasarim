@@ -108,7 +108,7 @@ public class CategoryProductRecyclerAdapter extends RecyclerView.Adapter<Categor
                                     });
                         }else if (shoppingCart.contains(productIdList.get(position))){
                             int index = shoppingCart.indexOf(productIdList.get(position));
-                            int cartQuantitForUpdate= Integer.parseInt(cartQuantities.get(position));
+                            int cartQuantitForUpdate= Integer.parseInt(cartQuantities.get(index));
                             int productCountForUpdate = Integer.parseInt(holder.productCount.getText().toString());
                             int newQuantity = cartQuantitForUpdate+productCountForUpdate;
                             cartQuantities.set(index, String.valueOf(newQuantity));
@@ -125,7 +125,6 @@ public class CategoryProductRecyclerAdapter extends RecyclerView.Adapter<Categor
                 });
             }
         });
-
     }
 
     @Override

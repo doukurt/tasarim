@@ -109,7 +109,7 @@ public class SearchRecyclerAdapter extends RecyclerView.Adapter<SearchRecyclerAd
                                     });
                         }else if (shoppingCart.contains(productIdList.get(position))){
                             int index = shoppingCart.indexOf(productIdList.get(position));
-                            int cartQuantitForUpdate= Integer.parseInt(cartQuantities.get(position));
+                            int cartQuantitForUpdate= Integer.parseInt(cartQuantities.get(index));
                             int productCountForUpdate = Integer.parseInt(holder.productCount.getText().toString());
                             int newQuantity = cartQuantitForUpdate+productCountForUpdate;
                             cartQuantities.set(index, String.valueOf(newQuantity));

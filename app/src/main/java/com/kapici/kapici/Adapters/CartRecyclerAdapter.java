@@ -88,7 +88,6 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
                         });
                     }
                 });
-
             }
         });
         holder.cartDecrase.setOnClickListener(new View.OnClickListener() {
@@ -162,9 +161,11 @@ public class CartRecyclerAdapter extends RecyclerView.Adapter<CartRecyclerAdapte
                                     user = documentSnapshot.toObject(Users.class);
                                     totalPrice =user.getCartTotal();
                                     totalPrice-=(Long.parseLong(cartPriceList.get(position))*Long.parseLong(cartQuantityList.get(position)));
+                                    cartIdList.remove(position);
+                                    cartQuantityList.remove(position);
                                     firebaseFirestore.collection("UserDetails").document(currentUser.getUid())
-                                            .update("shoppingCart", FieldValue.arrayRemove(cartIdList.get(position))
-                                                    ,"cartQuantities", FieldValue.arrayRemove(cartQuantityList.get(position)),"cartTotal",totalPrice).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            .update("shoppingCart", cartIdList
+                                                    ,"cartQuantities", cartQuantityList,"cartTotal",totalPrice).addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void aVoid) {
                                             Toast.makeText(v.getContext(),"Sepetten bir ürün kaldırıldı",Toast.LENGTH_SHORT).show();
